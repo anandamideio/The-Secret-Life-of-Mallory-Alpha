@@ -18,8 +18,10 @@ export default class Demo extends Phaser.Scene {
     this.load.image('platform-cake', 'assets/platforms/ground_cake.png');
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
+
+    const spriteChoice = ['player', 'noid', 'dogBoy', 'goop', 'cleetus', 'wheelie', 'rocko'][Phaser.Math.Between(0, 6)];
     // Load the player sprite
-    this.load.spritesheet('mallory', 'assets/player-sheet.png', { frameWidth: 24, frameHeight: 24 });
+    this.load.spritesheet('mallory', `assets/players/${spriteChoice}-sheet.png`, { frameWidth: 24, frameHeight: 24 });
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
