@@ -1,0 +1,11 @@
+# Ignore config files
+.eslintrc.cjs
+.gitignore
+package-lock.json
+vite.config.ts
+
+# Ignore Modules
+node_modules/
+
+# Ignore build files
+dist/
