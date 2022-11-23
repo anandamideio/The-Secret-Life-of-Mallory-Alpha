@@ -49,7 +49,11 @@ export default class Demo extends Phaser.Scene {
     });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0).setScale(2);
+    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0)
+    // Make the sprite twice the size
+    this.playerSprite.setScale(2)
+    // Make the sprite heavy
+    this.playerSprite.setGravityY(120);
     // Don't collide unless your landing on something
     this.playerSprite.body.checkCollision.up = false;
     this.playerSprite.body.checkCollision.left = false;
@@ -69,6 +73,10 @@ export default class Demo extends Phaser.Scene {
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
+
+    // Add a collider for the logo
+    this.physics.add.collider(this.playerSprite, logo);
+
     // Move the logo back and forth
     this.tweens.add({
       targets: logo,
@@ -82,20 +90,24 @@ export default class Demo extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
-    const { left, right } = cursorKeys;
+    const { left, right, up, down } = cursorKeys;
 
-    const touchingDown = playerSprite.body.touching.down;
+    const touchingGround = playerSprite.body.touching.down;
 
     // Jump when you touch a platform
-    if (touchingDown) playerSprite.setVelocityY(-300);
+    if (touchingGround && up.isDown) playerSprite.setVelocityY(-300);
 
-    // Move left and right
-    if (left.isDown && !touchingDown){
-      playerSprite.anims.play('move', true);
+    // Move Left
+    if (left.isDown) {
       playerSprite.setVelocityX(-200);
-    } else if (right.isDown && !touchingDown){
+      playerSprite.setFlipX(true);
       playerSprite.anims.play('move', true);
+    } else if (right.isDown){
+      playerSprite.anims.play('move', true);
+      playerSprite.setFlipX(false);
       playerSprite.setVelocityX(200);
+    } else if (down.isDown && !touchingGround) {
+      playerSprite.setVelocityY(300);
     } else {
       playerSprite.setVelocityX(0);
       playerSprite.anims.stop();
