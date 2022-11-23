@@ -8,6 +8,7 @@ Cars:
 - station wagon
 - economy car
 - compact car
+- cop car
 
 Trucks:
 - short flat bed
@@ -20,6 +21,8 @@ Trucks:
 - tanker truck
 - fire truck
 - ambulance
+- armored bank car
+- swat APC
 
 Motorcycles:
 - racing bike
