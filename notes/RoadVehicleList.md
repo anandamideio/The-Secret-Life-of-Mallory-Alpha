@@ -25,7 +25,7 @@ Trucks:
 - swat APC
 
 Motorcycles:
-- racing bike
+- street bike
 - dirt bike
 - chopper
 - cruising bike
