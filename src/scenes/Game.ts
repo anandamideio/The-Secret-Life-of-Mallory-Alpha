@@ -25,12 +25,12 @@ export default class Demo extends Phaser.Scene {
   }
 
   create() {
+    // Draw the background
     this.add.image(920, 550, 'background').setScale(0.4);
+    // Draw the logo above the background
     const logo = this.add.image(920, 70, 'logo');
-
-    // Create platforms
+    // Create staticGroup to house the platforms
     this.platforms = this.physics.add.staticGroup();
-
     // Draw platforms (of different biomes) randomly
     // Starting at two because the minimum Y we want is over 190
     [...range(2, 8)].forEach((i) => {
@@ -50,13 +50,16 @@ export default class Demo extends Phaser.Scene {
 
     // Draw the player sprite
     this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0).setScale(2);
-
+    // Don't collide unless your landing on something
     this.playerSprite.body.checkCollision.up = false;
     this.playerSprite.body.checkCollision.left = false;
     this.playerSprite.body.checkCollision.right = false;
-
+    // Follow the player
     this.cameras.main.startFollow(this.playerSprite)
+    // Set the horizontal deadzone to 1.5x game width
+    this.cameras.main.setDeadzone(this.scale.width * 1.5);
 
+    // Create the animation for movement
     this.anims.create({
       key: 'move',
       frameRate: 15,
@@ -66,7 +69,7 @@ export default class Demo extends Phaser.Scene {
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
-
+    // Move the logo back and forth
     this.tweens.add({
       targets: logo,
       y: 90,
