@@ -11,9 +11,7 @@ export default class Game extends Phaser.Scene {
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   obstacles!: ObstaclesController;
 
-  constructor() {
-    super('GameScene');
-  }
+  constructor() { super('GameScene'); }
 
   init(){
     this.cursorKeys = this.input.keyboard.createCursorKeys();
@@ -32,12 +30,20 @@ export default class Game extends Phaser.Scene {
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
 
-    const spriteChoice = ['player', 'noid', 'dogBoy', 'goop', 'cleetus', 'wheelie', 'rocko'][Phaser.Math.Between(0, 6)];
+    // Load objects
+    this.load.atlasXML('objects', 'assets/items/genericItems_spritesheet_colored.png', 'assets/items/genericItems_spritesheet_colored.xml');
+
+    const spriteChoice = ['player', 'noid', 'dogBoy', 'goop', 'cleetus', 'wheelie', 'rocko', 'leo', 'pascal'][Phaser.Math.Between(0, 8)];
     // Load the player sprite
     this.load.spritesheet('mallory', `assets/players/${spriteChoice}-sheet.png`, { frameWidth: 24, frameHeight: 24 });
   }
 
   create() {
+    // Create the UI
+    this.scene.launch('ui');
+
+    const map = this.make.tilemap({ key: 'map' });
+
     // Draw the background
     this.add.image(920, 550, 'background').setScale(0.4);
     // Draw the logo above the background
@@ -59,6 +65,17 @@ export default class Game extends Phaser.Scene {
 
       const body = platform.body as Phaser.Physics.Arcade.StaticBody;
       body.updateFromGameObject()
+    });
+
+
+    [...range(45, 50)].forEach((i) => {
+      const x = Phaser.Math.Between(600, 1200);
+      const y = Phaser.Math.Between(0, 600);
+
+      const object = this.physics.add.sprite(x, y, 'objects', `genericItem_color_0${i+1}.png`).setScale(.4);
+      object.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      object.setBounce(1, 1);
+      object.setCollideWorldBounds(true);
     });
 
     // Draw the player sprite

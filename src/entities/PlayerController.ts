@@ -44,16 +44,11 @@ export default class PlayerController {
     });
   }
 
-
-
   public update(delta: number) {
     this.stateMachine.update(delta);
   }
 
-  private idleOnEnter() {
-    // this.sprite.setVelocityX(0);
-    this.sprite.anims.stop();
-  }
+  private idleOnEnter() { this.sprite.anims.stop(); }
 
   private idleOnUpdate(){
     const { left, right } = this.cursors;
@@ -63,9 +58,7 @@ export default class PlayerController {
     if (spaceJustPressed) this.stateMachine.setState('jumping');
   }
 
-  private walkingOnEnter() {
-    this.sprite.anims.play('move', true);
-  }
+  private walkingOnEnter() { this.sprite.anims.play('move', true); }
 
   private walkingOnUpdate() {
     const { left, right, up } = this.cursors;
@@ -82,13 +75,10 @@ export default class PlayerController {
       this.stateMachine.setState('idle');
     }
 
-    // const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
     if (up.isDown) this.stateMachine.setState('jumping');
   }
 
-  private jumpingOnEnter() {
-    this.sprite.setVelocityY(-300);
-  }
+  private jumpingOnEnter() { this.sprite.setVelocityY(-300); }
 
   private jumpingOnUpdate() {
     const { left, right } = this.cursors;
