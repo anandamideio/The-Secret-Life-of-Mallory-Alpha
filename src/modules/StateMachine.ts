@@ -4,12 +4,14 @@ interface IStateFunctions {
   onExit?: () => void;
 }
 
-interface IState extends IStateFunctions { name: string; }
+type stateName = string;
+
+interface IState extends IStateFunctions { name: stateName; }
 
 let idCounter = 0;
 
-export default class StateMachine {
-  private states = new Map<string, IState>();
+export default class StateMachine<stateNames extends string = stateName> {
+  private states = new Map<stateNames, IState>();
   private previousState: IState | undefined;
   private currentState?: IState;
   private isChangingState = false;
@@ -23,7 +25,7 @@ export default class StateMachine {
     if (context) this.ctx = context;
   }
 
-  public addState(stateName: string, config: IStateFunctions) {
+  public addState(stateName: stateNames, config: IStateFunctions) {
     const { ctx } = this;
     this.states.set(stateName, {
       name: stateName,
@@ -34,20 +36,20 @@ export default class StateMachine {
     return this;
   }
 
-  public setState(stateName: string): void {
-    if (!this.states.has(stateName)) return console.warn(`[StateMachine::${this.id}:setState] State ${stateName} does not exist`);
-    if (this.isCurrentState(stateName)) return console.warn(`[StateMachine::${this.id}:setState] State ${stateName} is already the current state`);
+  public setState(name: stateNames): void {
+    if (!this.states.has(name)) return console.warn(`[StateMachine::${this.id}:setState] State ${name} does not exist`);
+    if (this.isCurrentState(name)) return console.warn(`[StateMachine::${this.id}:setState] State ${name} is already the current state`);
     if (this.isChangingState){
-      console.warn(`[StateMachine::${this.id}:setState] State ${stateName} is already changing`);
-      this.changeStateQueue.push(stateName);
+      console.warn(`[StateMachine::${this.id}:setState] State ${name} is already changing`);
+      this.changeStateQueue.push(name);
       return;
     }
 
     this.isChangingState = true;
-    console.log(`[StateMachine::${this.id}:setState] Changing state from ${this.currentState?.name ?? 'none'} to ${stateName}`);
+    console.log(`[StateMachine::${this.id}:setState] Changing state from ${this.currentState?.name ?? 'none'} to ${name}`);
 
     if (this.currentState?.onExit) this.currentState.onExit();
-    this.currentState = this.states.get(stateName);
+    this.currentState = this.states.get(name);
     if (this.currentState?.onEnter) this.currentState.onEnter();
 
     this.isChangingState = false;
@@ -64,7 +66,7 @@ export default class StateMachine {
 
   public update(deltaTime: number): void {
     if (this.changeStateQueue.length > 0) {
-      this.setState(this.changeStateQueue.shift() as string);
+      this.setState(this.changeStateQueue.shift() as stateNames);
       return;
     }
     if (this.currentState?.onUpdate) this.currentState.onUpdate(deltaTime);

@@ -5,7 +5,7 @@ import range from '../modules/range.js';
 export default class Demo extends Phaser.Scene {
   playerSprite: Phaser.Physics.Arcade.Sprite|undefined = undefined;
   platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
-  cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys|undefined = undefined;
+  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor() {
     super('GameScene');
