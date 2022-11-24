@@ -16,7 +16,7 @@ export default class PlayerController {
   private obstacles: ObstaclesController;
 
   private stateMachine: StateMachine<'idle'|'walking'|'jumping'>;
-  private accessor health = 100
+  private health = 100
 
   constructor({ scene, sprite, cursorKeys, obstacles }: PlayerConstructor) {
     this.scene = scene;
@@ -46,8 +46,8 @@ export default class PlayerController {
 
 
 
-  public update(deltaTime: number) {
-    this.stateMachine.update(deltaTime);
+  public update(delta: number) {
+    this.stateMachine.update(delta);
   }
 
   private idleOnEnter() {
@@ -68,7 +68,7 @@ export default class PlayerController {
   }
 
   private walkingOnUpdate() {
-    const { left, right } = this.cursors;
+    const { left, right, up } = this.cursors;
     const speed = 200;
 
     if (left.isDown) {
@@ -82,8 +82,8 @@ export default class PlayerController {
       this.stateMachine.setState('idle');
     }
 
-    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
-    if (spaceJustPressed) this.stateMachine.setState('jumping');
+    // const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+    if (up.isDown) this.stateMachine.setState('jumping');
   }
 
   private jumpingOnEnter() {

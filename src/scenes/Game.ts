@@ -1,14 +1,27 @@
 import Phaser from 'phaser';
+import ObstaclesController from '../entities/ObstaclesController.js';
+import PlayerController from '../entities/PlayerController.js';
 import getRandomFloat from '../modules/getRandomFloat.js';
 import range from '../modules/range.js';
 
-export default class Demo extends Phaser.Scene {
-  playerSprite: Phaser.Physics.Arcade.Sprite|undefined = undefined;
+export default class Game extends Phaser.Scene {
+  player?: PlayerController;
+  playerSprite?: Phaser.Physics.Arcade.Sprite;
   platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
+  obstacles!: ObstaclesController;
 
   constructor() {
     super('GameScene');
+  }
+
+  init(){
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
+    this.obstacles = new ObstaclesController();
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
+      this.destroy();
+    })
   }
 
   preload() {
@@ -22,8 +35,6 @@ export default class Demo extends Phaser.Scene {
     const spriteChoice = ['player', 'noid', 'dogBoy', 'goop', 'cleetus', 'wheelie', 'rocko'][Phaser.Math.Between(0, 6)];
     // Load the player sprite
     this.load.spritesheet('mallory', `assets/players/${spriteChoice}-sheet.png`, { frameWidth: 24, frameHeight: 24 });
-
-    this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
   create() {
@@ -51,27 +62,24 @@ export default class Demo extends Phaser.Scene {
     });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0)
-    // Make the sprite twice the size
-    this.playerSprite.setScale(2)
-    // Make the sprite heavy
-    this.playerSprite.setGravityY(120);
+    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0).setScale(2);
+
+    // Create the player controller
+    this.player = new PlayerController({
+      scene: this,
+      sprite: this.playerSprite,
+      cursorKeys: this.cursorKeys,
+      obstacles: this.obstacles
+    });
+
     // Don't collide unless your landing on something
-    this.playerSprite.body.checkCollision.up = false;
-    this.playerSprite.body.checkCollision.left = false;
-    this.playerSprite.body.checkCollision.right = false;
+    // this.playerSprite.body.checkCollision.up = false;
+    // this.playerSprite.body.checkCollision.left = false;
+    // this.playerSprite.body.checkCollision.right = false;
     // Follow the player
-    this.cameras.main.startFollow(this.playerSprite)
+    this.cameras.main.startFollow(this.playerSprite, true)
     // Set the horizontal deadzone to 1.5x game width
     this.cameras.main.setDeadzone(this.scale.width * 1.5);
-
-    // Create the animation for movement
-    this.anims.create({
-      key: 'move',
-      frameRate: 15,
-      frames: this.anims.generateFrameNumbers('mallory', {start: 0, end: 4}),
-      repeat: -1
-    });
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
@@ -90,29 +98,12 @@ export default class Demo extends Phaser.Scene {
     });
   }
 
+  destroy(){
+    // this.scene.stop('ui');
+    console.log('SHUTDOWN');
+  }
+
   update(time: number, delta: number): void {
-    const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
-    const { left, right, up, down } = cursorKeys;
-
-    const touchingGround = playerSprite.body.touching.down;
-
-    // Jump when you touch a platform
-    if (touchingGround && up.isDown) playerSprite.setVelocityY(-300);
-
-    // Move Left
-    if (left.isDown) {
-      playerSprite.setVelocityX(-200);
-      playerSprite.setFlipX(true);
-      playerSprite.anims.play('move', true);
-    } else if (right.isDown){
-      playerSprite.anims.play('move', true);
-      playerSprite.setFlipX(false);
-      playerSprite.setVelocityX(200);
-    } else if (down.isDown && !touchingGround) {
-      playerSprite.setVelocityY(300);
-    } else {
-      playerSprite.setVelocityX(0);
-      playerSprite.anims.stop();
-    }
+    this.player?.update(delta)
   }
 }
