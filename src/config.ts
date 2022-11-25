@@ -5,13 +5,12 @@ export default {
   parent: 'game',
   backgroundColor: '#000',
   scale: {
-    width: 1920,
-    height: 1080,
-    mode: Phaser.Scale.RESIZE,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    width: window.innerWidth,
+    height: window.innerHeight,
+    mode: Phaser.Scale.FIT,
   },
   physics: {
     default: 'arcade',
     arcade: { gravity: { y: 200 }, debug: true }
   },
-};
+} as Phaser.Types.Core.GameConfig;
