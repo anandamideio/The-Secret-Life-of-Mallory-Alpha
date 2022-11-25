@@ -1,23 +1,30 @@
+import Phaser from 'phaser';
+import { sharedInstance as events } from './EventCenter.js';
 export default class UI extends Phaser.Scene {
   private graphics!: Phaser.GameObjects.Graphics;
-  private scoreText!: Phaser.GameObjects.Text;
+
+  private techText!: Phaser.GameObjects.Text;
+  private tech = 0;
+
   private healthText!: Phaser.GameObjects.Text;
-  private score = 0;
   private lastHealth = 100;
 
-  constructor() {
-    super({ key: 'ui' });
-  }
+  constructor() { super({ key: 'ui' }); }
 
-  public init() { this.score = 0; }
+  public init() { this.tech = 0; }
 
   public create() {
     this.graphics = this.add.graphics();
     this.setHealthBar(100);
 
-    this.scoreText = this.add.text(10, 40, 'Score: 0', { fontSize: '16px' });
+    this.techText = this.add.text(10, 40, 'Tech: 0', { fontSize: '16px' });
 
-    this.events.on('health-changed', this.handleHealthChanged, this);
+    events.on('health-changed', this.handleHealthChanged, this);
+    events.on('tech-collected', this.handleTechCollected, this);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
+      events.off('tech-collected', this.handleTechCollected, this);
+    });
   }
 
   private setHealthBar(value: number) {
@@ -46,5 +53,10 @@ export default class UI extends Phaser.Scene {
     })
 
     this.lastHealth = value
+  }
+
+  private handleTechCollected() {
+    this.tech += 1;
+    this.techText.setText(`Tech: ${this.tech}`);
   }
 }

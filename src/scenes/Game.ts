@@ -68,13 +68,15 @@ export default class Game extends Phaser.Scene {
     });
 
 
-    [...range(45, 50)].forEach((i) => {
+    [...range(48, 53)].forEach((i) => {
       const x = Phaser.Math.Between(600, 1200);
       const y = Phaser.Math.Between(0, 600);
 
-      const object = this.physics.add.sprite(x, y, 'objects', `genericItem_color_0${i+1}.png`).setScale(.4);
+      const object = this.physics.add.sprite(x, y, 'objects', `genericItem_color_0${i+1}.png`);
+      object.setScale(.4);
       object.setVelocity(Phaser.Math.Between(-200, 200), 20);
       object.setBounce(1, 1);
+      object.setData('type', 'object');
       object.setCollideWorldBounds(true);
     });
 
