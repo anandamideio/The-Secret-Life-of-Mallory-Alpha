@@ -51,11 +51,11 @@ export default class PlayerController {
   private idleOnEnter() { this.sprite.anims.stop(); }
 
   private idleOnUpdate(){
-    const { left, right } = this.cursors;
+    const { left, right, up } = this.cursors;
     if (left.isDown || right.isDown) this.stateMachine.setState('walking');
 
     const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
-    if (spaceJustPressed) this.stateMachine.setState('jumping');
+    if (spaceJustPressed || up.isDown) this.stateMachine.setState('jumping');
   }
 
   private walkingOnEnter() { this.sprite.anims.play('move', true); }
@@ -75,7 +75,8 @@ export default class PlayerController {
       this.stateMachine.setState('idle');
     }
 
-    if (up.isDown) this.stateMachine.setState('jumping');
+    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+    if (spaceJustPressed || up.isDown) this.stateMachine.setState('jumping');
   }
 
   private jumpingOnEnter() { this.sprite.setVelocityY(-300); }
