@@ -10,10 +10,8 @@ export default {
     mode: Phaser.Scale.FIT,
   },
   physics: {
-    default: 'arcade',
-    arcade: { gravity: { y: 200 }, debug: true }
+    default: 'matter',
+    matter: { debug: true }
   },
-  render: {
-    pixelArt: true
-  }
+  render: { pixelArt: true }
 } as Phaser.Types.Core.GameConfig;

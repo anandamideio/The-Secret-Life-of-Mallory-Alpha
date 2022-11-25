@@ -5,10 +5,12 @@ import getRandomFloat from '../modules/getRandomFloat.js';
 import range from '../modules/range.js';
 
 export default class Game extends Phaser.Scene {
+  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
+
   player?: PlayerController;
   playerSprite?: Phaser.Physics.Arcade.Sprite;
+
   platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
-  cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
   obstacles!: ObstaclesController;
 
   constructor() { super('GameScene'); }
@@ -23,8 +25,10 @@ export default class Game extends Phaser.Scene {
   }
 
   preload() {
+    this.load.tilemapTiledJSON('map-pieces', 'assets/tilemaps/City_Map.tsj');
+
     this.load.image('background', 'assets/bg_layer1.png');
-    this.load.image('logo', 'assets/Sample-Logo.png');
+    
     // Load platforms
     this.load.image('platform-cake', 'assets/platforms/ground_cake.png');
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
@@ -41,6 +45,11 @@ export default class Game extends Phaser.Scene {
   create() {
     // Create the UI
     this.scene.launch('ui');
+
+    const map = this.make.tilemap({ key: 'map' });
+    // const tileset = map.add('background', 'background');
+    
+
     // Draw the background
     this.add.image(window.innerWidth / 2, 550, 'background').setScale(0.4);
 
