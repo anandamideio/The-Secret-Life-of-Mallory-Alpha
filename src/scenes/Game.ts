@@ -2,31 +2,50 @@ import Phaser from 'phaser';
 import getRandomFloat from '../modules/getRandomFloat.js';
 import range from '../modules/range.js';
 
+/* 
+player sub should have a health bar, every time the sub hits something it taakes damage, 
+hitting the engines takes more damage and hitting the cockpit cannopy does damage that 
+is a function of depth, collecting samples of small animals, water from new depths and 
+plant & soil samples gain reputation and funding for further research
+
+The sub should have a certain amount of battery life, O2, hit points, & sample inventory space.  These things are upgradable
+the user should also be able to get a scuba suit or a Deep water diving suit that makes new more valuable samples possible to collect.  
+*/
+
 export default class Demo extends Phaser.Scene {
-  playerSprite: Phaser.Physics.Arcade.Sprite|undefined = undefined;
-  platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
-  cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys|undefined = undefined;
+  playerSprite: Phaser.Physics.Arcade.Sprite | undefined = undefined;
+  platforms: Phaser.Physics.Arcade.StaticGroup | undefined = undefined;
+  cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys | undefined = undefined;
 
   constructor() {
     super('GameScene');
   }
 
   preload() {
-    this.load.image('background', 'assets/bg_layer1.png');
-    this.load.image('logo', 'assets/Sample-Logo.png');
+    // this.load.image('background', 'assets/bg_layer1.png');
+    // this.load.image('logo', 'assets/Sample-Logo.png');
     // Load platforms
     this.load.image('platform-cake', 'assets/platforms/ground_cake.png');
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
     // Load the player sprite
-    this.load.spritesheet('mallory', 'assets/player-sheet.png', { frameWidth: 24, frameHeight: 24 });
+    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV.png', { frameWidth: 512, frameHeight: 512 });
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
+  //here is where we set up the real background
   create() {
-    this.add.image(920, 550, 'background').setScale(0.4);
-    const logo = this.add.image(920, 70, 'logo');
+    this.graphics = this.add.graphics();
+    this.graphics.fillStyle(color:0x000000, alpha 0.5);
+    this.graphics.fillRect(x:0, y:0, width: 400, height: 50)
+    //change background color
+    // var div = document.getElementById('game');
+    // div.style.backgroundColor = "#F00";
+
+
+    // this.add.image(920, 550, 'background').setScale(0.4);
+    // const logo = this.add.image(920, 70, 'logo');
 
     // Create platforms
     this.platforms = this.physics.add.staticGroup();
@@ -38,6 +57,7 @@ export default class Demo extends Phaser.Scene {
       const y = 110 * i;
 
       // Choose a biome at random
+      //NOTE: put random animals on the way down in this array
       const biome = ['cake', 'grass', 'sand'][Phaser.Math.Between(0, 2)];
       // Create a platform of that biome
       const platform = this.platforms?.create(x, y, `platform-${biome}`) as Phaser.Physics.Arcade.Sprite;
@@ -49,7 +69,7 @@ export default class Demo extends Phaser.Scene {
     });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0).setScale(2);
+    this.playerSprite = this.physics.add.sprite(940, 320, 'DeepSubmergenceVehicle', 0).setScale(0.5);
 
     this.playerSprite.body.checkCollision.up = false;
     this.playerSprite.body.checkCollision.left = false;
@@ -60,37 +80,39 @@ export default class Demo extends Phaser.Scene {
     this.anims.create({
       key: 'move',
       frameRate: 15,
-      frames: this.anims.generateFrameNumbers('mallory', {start: 0, end: 4}),
+      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
       repeat: -1
-    });
+    }); ``
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
 
-    this.tweens.add({
-      targets: logo,
-      y: 90,
-      duration: 900,
-      ease: 'Sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });
+    // this.tweens.add({
+    //   targets: logo,
+    //   y: 90,
+    //   duration: 900,
+    //   ease: 'Sine.inOut',
+    //   yoyo: true,
+    //   repeat: -1
+    // });
   }
 
   update(time: number, delta: number): void {
     const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
     const { left, right } = cursorKeys;
 
-    const touchingDown = playerSprite.body.touching.down;
+    const touchingGround = playerSprite.body.touching.down;
 
     // Jump when you touch a platform
-    if (touchingDown) playerSprite.setVelocityY(-300);
+    if (touchingGround) playerSprite.setVelocityY(-50);
 
     // Move left and right
-    if (left.isDown && !touchingDown){
+    // if (left.isDown && !touchingGround){
+    if (left.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityX(-200);
-    } else if (right.isDown && !touchingDown){
+      // } else if (right.isDown && !touchingGround) {
+    } else if (right.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityX(200);
     } else {
