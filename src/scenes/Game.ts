@@ -41,13 +41,11 @@ export default class Game extends Phaser.Scene {
   create() {
     // Create the UI
     this.scene.launch('ui');
-
-    const map = this.make.tilemap({ key: 'map' });
-
     // Draw the background
-    this.add.image(920, 550, 'background').setScale(0.4);
+    this.add.image(window.innerWidth / 2, 550, 'background').setScale(0.4);
+
     // Draw the logo above the background
-    const logo = this.add.image(920, 70, 'logo');
+    const logo = this.add.image(window.innerWidth / 2, 70, 'logo');
     // Create staticGroup to house the platforms
     this.platforms = this.physics.add.staticGroup();
     // Draw platforms (of different biomes) randomly
