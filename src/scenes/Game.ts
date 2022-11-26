@@ -84,7 +84,7 @@ export default class Demo extends Phaser.Scene {
       // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
       frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 0 }),
       repeat: -1
-    }); ``
+    }); 
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
