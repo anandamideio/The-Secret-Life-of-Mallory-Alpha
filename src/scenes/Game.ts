@@ -83,6 +83,7 @@ export default class Demo extends Phaser.Scene {
       frameRate: 15,
       // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
       frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 0 }),
+      //here is where we need to add in bubbles animation
       repeat: -1
     }); 
 
