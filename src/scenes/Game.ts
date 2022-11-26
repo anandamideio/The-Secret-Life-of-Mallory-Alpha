@@ -16,6 +16,7 @@ export default class Demo extends Phaser.Scene {
   playerSprite: Phaser.Physics.Arcade.Sprite | undefined = undefined;
   platforms: Phaser.Physics.Arcade.StaticGroup | undefined = undefined;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys | undefined = undefined;
+  graphics: Phaser.GameObjects.Graphics | undefined = undefined;
 
   constructor() {
     super('GameScene');
@@ -37,8 +38,8 @@ export default class Demo extends Phaser.Scene {
   //here is where we set up the real background
   create() {
     this.graphics = this.add.graphics();
-    this.graphics.fillStyle(color:0x000000, alpha 0.5);
-    this.graphics.fillRect(x:0, y:0, width: 400, height: 50)
+    this.graphics.fillStyle(0x00006F, 0.5);
+    this.graphics.fillRect(0, 0, window.innerWidth, window.innerHeight)
     //change background color
     // var div = document.getElementById('game');
     // div.style.backgroundColor = "#F00";
@@ -80,7 +81,8 @@ export default class Demo extends Phaser.Scene {
     this.anims.create({
       key: 'move',
       frameRate: 15,
-      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
+      // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
+      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 0 }),
       repeat: -1
     }); ``
 
@@ -99,12 +101,12 @@ export default class Demo extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
-    const { left, right } = cursorKeys;
+    const { up, down, left, right } = cursorKeys;
 
     const touchingGround = playerSprite.body.touching.down;
 
     // Jump when you touch a platform
-    if (touchingGround) playerSprite.setVelocityY(-50);
+    if (touchingGround) playerSprite.setVelocityY(0);
 
     // Move left and right
     // if (left.isDown && !touchingGround){
@@ -115,6 +117,12 @@ export default class Demo extends Phaser.Scene {
     } else if (right.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityX(200);
+    } else if (up.isDown) {
+      playerSprite.anims.play('move', true);
+      playerSprite.setVelocityY(-200);
+    } else if (down.isDown) {
+      playerSprite.anims.play('move', true);
+      playerSprite.setVelocityY(200);
     } else {
       playerSprite.setVelocityX(0);
       playerSprite.anims.stop();
