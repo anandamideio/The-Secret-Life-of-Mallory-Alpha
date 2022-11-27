@@ -7,6 +7,6 @@ import UI from './scenes/UI.js';
 
 new Phaser.Game(
   Object.assign(config, {
-    scene: [MainMenu, Game, UI, GameOver]
+    scene: [Game, UI, GameOver]
   })
 );
