@@ -114,10 +114,12 @@ export default class Demo extends Phaser.Scene {
     if (left.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityX(-200);
+      playerSprite.flipX = false;
       // } else if (right.isDown && !touchingGround) {
     } else if (right.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityX(200);
+      playerSprite.flipX = true;
     } else if (up.isDown) {
       playerSprite.anims.play('move', true);
       playerSprite.setVelocityY(-200);
