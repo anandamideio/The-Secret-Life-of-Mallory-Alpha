@@ -18,6 +18,11 @@ export default class Demo extends Phaser.Scene {
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys | undefined = undefined;
   graphics: Phaser.GameObjects.Graphics | undefined = undefined;
 
+  private ballast = 100;  //empty is -100, full is 100, and vessel is flooding when above 100
+  private battery = 100;  //empty is 0, full is 100
+  private life = 100;  //represents how damaged the ship has received
+  private oxygen = 100;
+
   constructor() {
     super('GameScene');
   }
@@ -72,9 +77,9 @@ export default class Demo extends Phaser.Scene {
     // Draw the player sprite
     this.playerSprite = this.physics.add.sprite(940, 320, 'DeepSubmergenceVehicle', 0).setScale(0.5);
 
-    this.playerSprite.body.checkCollision.up = false;
-    this.playerSprite.body.checkCollision.left = false;
-    this.playerSprite.body.checkCollision.right = false;
+    // this.playerSprite.body.checkCollision.up = false;
+    // this.playerSprite.body.checkCollision.left = false;
+    // this.playerSprite.body.checkCollision.right = false;
 
     this.cameras.main.startFollow(this.playerSprite)
 
