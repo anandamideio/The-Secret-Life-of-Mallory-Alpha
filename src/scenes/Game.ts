@@ -34,8 +34,8 @@ export default class Demo extends Phaser.Scene {
     this.load.image('platform-cake', 'assets/platforms/ground_cake.png');
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
-    // Load the player sprite
-    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV.png', { frameWidth: 512, frameHeight: 512 });
+    // Load the player sprite 
+    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV-Sheet.png', { frameWidth: 1000, frameHeight: 450 });
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
@@ -75,7 +75,7 @@ export default class Demo extends Phaser.Scene {
     });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'DeepSubmergenceVehicle', 0).setScale(0.5);
+    this.playerSprite = this.physics.add.sprite(1000, 450, 'DeepSubmergenceVehicle', 0).setScale(0.5);
 
     // this.playerSprite.body.checkCollision.up = false;
     // this.playerSprite.body.checkCollision.left = false;
@@ -87,7 +87,7 @@ export default class Demo extends Phaser.Scene {
       key: 'move',
       frameRate: 15,
       // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
-      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 0 }),
+      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 2 }),
       //here is where we need to add in bubbles animation
       repeat: -1
     }); 
