@@ -109,6 +109,11 @@ export default class Demo extends Phaser.Scene {
     const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
     const { up, down, left, right } = cursorKeys;
 
+    // const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    // const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    // const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    // const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+
     const touchingGround = playerSprite.body.touching.down;
 
     // Jump when you touch a platform
