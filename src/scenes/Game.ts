@@ -18,6 +18,11 @@ export default class Demo extends Phaser.Scene {
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys | undefined = undefined;
   graphics: Phaser.GameObjects.Graphics | undefined = undefined;
 
+  private ballast = 100;  //empty is -100, full is 100, and vessel is flooding when above 100
+  private battery = 100;  //empty is 0, full is 100
+  private life = 100;  //represents how damaged the ship has received
+  private oxygen = 100;
+
   constructor() {
     super('GameScene');
   }
@@ -29,8 +34,8 @@ export default class Demo extends Phaser.Scene {
     this.load.image('platform-cake', 'assets/platforms/ground_cake.png');
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
-    // Load the player sprite
-    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV.png', { frameWidth: 512, frameHeight: 512 });
+    // Load the player sprite 
+    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV-Sheet.png', { frameWidth: 1000, frameHeight: 450 });
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
@@ -70,11 +75,11 @@ export default class Demo extends Phaser.Scene {
     });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'DeepSubmergenceVehicle', 0).setScale(0.5);
+    this.playerSprite = this.physics.add.sprite(1000, 450, 'DeepSubmergenceVehicle', 0).setScale(0.5);
 
-    this.playerSprite.body.checkCollision.up = false;
-    this.playerSprite.body.checkCollision.left = false;
-    this.playerSprite.body.checkCollision.right = false;
+    // this.playerSprite.body.checkCollision.up = false;
+    // this.playerSprite.body.checkCollision.left = false;
+    // this.playerSprite.body.checkCollision.right = false;
 
     this.cameras.main.startFollow(this.playerSprite)
 
@@ -82,7 +87,7 @@ export default class Demo extends Phaser.Scene {
       key: 'move',
       frameRate: 15,
       // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
-      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 0 }),
+      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 2 }),
       //here is where we need to add in bubbles animation
       repeat: -1
     }); 
@@ -103,6 +108,11 @@ export default class Demo extends Phaser.Scene {
   update(time: number, delta: number): void {
     const { playerSprite, cursorKeys } = this as { playerSprite: Phaser.Physics.Arcade.Sprite, cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys };
     const { up, down, left, right } = cursorKeys;
+
+    // const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    // const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    // const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    // const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
     const touchingGround = playerSprite.body.touching.down;
 
