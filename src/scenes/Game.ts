@@ -35,7 +35,7 @@ export default class Demo extends Phaser.Scene {
     this.load.image('platform-grass', 'assets/platforms/ground_grass.png');
     this.load.image('platform-sand', 'assets/platforms/ground_sand.png');
     // Load the player sprite 
-    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV-Sheet.png', { frameWidth: 1000, frameHeight: 450 });
+    this.load.spritesheet('DeepSubmergenceVehicle', 'assets/DSV-Sheet2.png', { frameWidth: 1000, frameHeight: 450 });
 
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
@@ -85,12 +85,21 @@ export default class Demo extends Phaser.Scene {
 
     this.anims.create({
       key: 'move',
-      frameRate: 15,
+      frameRate: 7,
       // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
       frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 2 }),
       //here is where we need to add in bubbles animation
       repeat: -1
-    }); 
+    });
+    
+    this.anims.create({
+      key: 'stop',
+      frameRate: 7,
+      // frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 0, end: 4 }),
+      frames: this.anims.generateFrameNumbers('DeepSubmergenceVehicle', { start: 3, end: 3 }),
+      //here is where we need to add in bubbles animation
+      repeat: -1
+    });
 
     // Add collision detection
     this.physics.add.collider(this.platforms, this.playerSprite);
@@ -131,13 +140,18 @@ export default class Demo extends Phaser.Scene {
       playerSprite.setVelocityX(200);
       playerSprite.flipX = true;
     } else if (up.isDown) {
-      playerSprite.anims.play('move', true);
+      playerSprite.anims.play('stop', true);
+      playerSprite.anims.stop();
+      // playerSprite.anims.play('move', true);
       playerSprite.setVelocityY(-200);
     } else if (down.isDown) {
-      playerSprite.anims.play('move', true);
+      playerSprite.anims.play('stop', true);
+      playerSprite.anims.stop();
+      // playerSprite.anims.play('move', true);
       playerSprite.setVelocityY(200);
     } else {
       playerSprite.setVelocityX(0);
+      playerSprite.anims.play('stop', true);
       playerSprite.anims.stop();
     }
   }
