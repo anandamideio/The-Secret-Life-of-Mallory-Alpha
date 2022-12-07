@@ -9,9 +9,9 @@ export default class Game extends Phaser.Scene {
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   player?: PlayerController;
-  playerSprite?: Phaser.Physics.Arcade.Sprite;
+  playerSprite?: Phaser.GameObjects.Sprite;
 
-  platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
+  // platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
   obstacles!: ObstaclesController;
 
   constructor() { super('GameScene'); }
@@ -89,9 +89,12 @@ export default class Game extends Phaser.Scene {
     // });
 
     // Draw the player sprite
-    this.playerSprite = this.physics.add.sprite(940, 320, 'mallory', 0);
+    this.playerSprite = this.add.sprite(940, 320, 'mallory', 0);
+
+    console.log(this.playerSprite)
 
     // Create the player controller
+    if (!this.playerSprite) throw new Error('Player sprite not found')
     this.player = new PlayerController({
       scene: this,
       sprite: this.playerSprite,
@@ -104,12 +107,12 @@ export default class Game extends Phaser.Scene {
     // this.playerSprite.body.checkCollision.left = false;
     // this.playerSprite.body.checkCollision.right = false;
     // Follow the player
-    this.cameras.main.startFollow(this.playerSprite, true)
+    // this.cameras.main.startFollow(this.playerSprite, true)
     // Set the horizontal deadzone to 1.5x game width
-    this.cameras.main.setDeadzone(this.scale.width * 1.5);
+    // this.cameras.main.setDeadzone(this.scale.width * 1.5);
 
     // Add collision detection
-    this.physics.add.collider(this.playerSprite, layer);
+    // this.physics.add.collider(this.playerSprite, layer);
     // this.physics.add.collider(this.platforms, this.playerSprite);
 
     // Add a collider for the logo

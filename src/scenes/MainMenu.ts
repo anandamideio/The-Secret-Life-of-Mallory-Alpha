@@ -11,34 +11,39 @@ export default class MainMenu extends Phaser.Scene {
   preload() {
     const glassUIFile = 'UI/uipackSpace_sheet';
     this.load.atlasXML('glass-UI', `assets/${glassUIFile}.png`, `assets/${glassUIFile}.xml`);
-
     this.load.image('logo', 'assets/Sample-Logo.png');
   }
 
   create() {
     const { width, height } = this.scale;
-
     // Draw the logo at the top of the screen
     this.add.image(window.innerWidth / 2, 70, 'logo').setScale(0.75);
-
-    // Play Button
-    const playButton = this.add.image(width * 0.5, height * 0.6, 'glass-UI', 'glassPanel.png')
-      .setDisplaySize(200, 50).on('selected', () => {
+    // Play Main Button
+    const playMainButton = this.add.image(width * 0.5, height * 0.6, 'glass-UI', 'glassPanel.png')
+      .setDisplaySize(250, 50).on('selected', () => {
         this.scene.start('GameScene');
       })
 
-    this.add.text(playButton.x, playButton.y, 'Play').setOrigin(0.5);
+    this.add.text(playMainButton.x, playMainButton.y, 'Play (Main Game)').setOrigin(0.5);
+
+    // Play Button
+    const playMatterButton = this.add.image(playMainButton.x, playMainButton.y + playMainButton.displayHeight + 10, 'glass-UI', 'glassPanel.png')
+      .setDisplaySize(250, 50).on('selected', () => {
+        this.scene.start('MatterScene');
+      })
+
+    this.add.text(playMatterButton.x, playMatterButton.y, 'Play (Matter Demo)').setOrigin(0.5);
 
     // Options Button
-    const optionsButton = this.add.image(playButton.x, playButton.y + playButton.displayHeight + 10, 'glass-UI', 'glassPanel.png')
-      .setDisplaySize(200, 50).on('selected', () => {
+    const optionsButton = this.add.image(playMatterButton.x, playMatterButton.y + playMatterButton.displayHeight + 10, 'glass-UI', 'glassPanel.png')
+      .setDisplaySize(250, 50).on('selected', () => {
         console.log('Options');
       })
 
     this.add.text(optionsButton.x, optionsButton.y, 'Options').setOrigin(0.5);
 
     // Add Buttons
-    this.buttons.push(playButton, optionsButton);
+    this.buttons.push(playMainButton, playMatterButton, optionsButton);
 
     // Add Cursor
     this.buttonSelector = this.add.image(0, 0, 'glass-UI', 'cursor_hand.png')
@@ -48,7 +53,7 @@ export default class MainMenu extends Phaser.Scene {
 
     // Clear events on SHUTDOWN
     this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
-      playButton.off('selected');
+      playMainButton.off('selected');
       optionsButton.off('selected');
     });
   }
