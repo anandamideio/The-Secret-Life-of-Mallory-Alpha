@@ -31,7 +31,7 @@ export default class PlayerController {
     this.body = this.scene.matter.bodies.circle(this.sprite.x, this.sprite.y, 12, {
       label: 'player',
       frictionAir: 0.05,
-      friction: 0.1,
+      friction: 0.3,
       restitution: 0.5
     });
 
@@ -74,42 +74,44 @@ export default class PlayerController {
   private walkingOnEnter() { this.sprite.anims.play('move', true); }
 
   private walkingOnUpdate() {
-    const { left, right, up } = this.cursors;
+    const { left, right, up, space } = this.cursors;
     const xSpeed = this.speed.x;
+    const { matter } = this.scene;
 
     if (left.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
+      matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y })
+      matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(false);
     } else {
-      this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y })
+      matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y })
       this.stateMachine.setState('idle');
     }
 
-    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(this.cursors.space)
+    const spaceJustPressed = Phaser.Input.Keyboard.JustDown(space)
     if (spaceJustPressed || up.isDown) this.stateMachine.setState('jumping');
   }
 
   private jumpingOnEnter() {
+    const { matter } = this.scene;
     const ySpeed = this.speed.y;
-     // set the vertical velocity of the body to -300
-     this.scene.matter.body.setVelocity(this.body, { x: this.body.velocity.x, y: -ySpeed });
+    matter.body.setVelocity(this.body, { x: this.body.velocity.x, y: -ySpeed });
    }
 
   private jumpingOnUpdate() {
     const { left, right } = this.cursors;
     const xSpeed = this.speed.x;
+    const { matter } = this.scene;
 
     if (left.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
+      matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y });
+      matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y });
       this.sprite.setFlipX(false);
     } else {
-      this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
+      matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
     }
 
     // if (this.sprite.body.touching.down) this.stateMachine.setState('walking');
