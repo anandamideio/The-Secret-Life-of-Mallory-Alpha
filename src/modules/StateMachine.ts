@@ -77,4 +77,12 @@ export default class StateMachine<stateNames extends string = stateName> {
     }
     if (this.currentState?.onUpdate) this.currentState.onUpdate(deltaTime);
   }
+
+  public destroy(): void {
+    this.states.clear();
+    this.previousState = undefined;
+    this.currentState = undefined;
+    this.isChangingState = false;
+    this.changeStateQueue = [];
+  }
 }

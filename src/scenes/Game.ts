@@ -122,6 +122,8 @@ export default class Game extends Phaser.Scene {
 
   destroy(){
     this.scene.stop('ui');
+    // I need to delete the player here
+    this.player?.destroy();
     console.log('SHUTDOWN');
   }
 

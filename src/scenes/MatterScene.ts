@@ -1,11 +1,9 @@
-import Matter, { Vector, Body } from 'matter-js';
-
 export default class MatterScene extends Phaser.Scene {
   car!: Phaser.Physics.Matter.Image;
   tracker1!: Phaser.GameObjects.Rectangle;
   tracker2!: Phaser.GameObjects.Rectangle;
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  vector = Vector;
+  vector!: MatterJS.VectorFactory;
 
   constructor() { super('MatterScene'); }
 
@@ -17,6 +15,8 @@ export default class MatterScene extends Phaser.Scene {
   create() {
     // Create the UI
     this.scene.launch('ui');
+
+    this.vector = this.matter.vector;
 
     this.add.tileSprite(400, 300, 800, 600, 'soil');
 
@@ -56,13 +56,13 @@ export default class MatterScene extends Phaser.Scene {
     }
   }
 
-  steer(force: Vector){
+  steer(force: MatterJS.Vector){
     const { cursors: { left, right }, car, vector } = this;
 
     if (left.isDown) {
-      Body.applyForce(car.body as Matter.Body, car.getTopRight(), force);
+      this.matter.body.applyForce(car.body, car.getTopRight(), force);
     } else if (right.isDown) {
-      Body.applyForce(car.body as Matter.Body, car.getBottomRight(), vector.neg(force));
+      this.matter.body.applyForce(car.body, car.getBottomRight(), vector.neg(force));
     }
   }
 

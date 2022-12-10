@@ -142,4 +142,9 @@ export default class PlayerController {
 
     // if (this.sprite.body.touching.down) this.stateMachine.setState('walking');
   }
+
+  destroy() {
+    this.sprite.destroy();
+    this.stateMachine.destroy();
+  }
 }
