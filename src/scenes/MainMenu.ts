@@ -20,25 +20,28 @@ export default class MainMenu extends Phaser.Scene {
     this.add.image(window.innerWidth / 2, 70, 'logo').setScale(0.75);
     // Play Main Button
     const playMainButton = this.add.image(width * 0.5, height * 0.6, 'glass-UI', 'glassPanel.png')
-      .setDisplaySize(250, 50).on('selected', () => {
-        this.scene.start('GameScene');
-      })
+      .setDisplaySize(250, 50)
+      .setInteractive()
+      .on('selected', () => { this.scene.start('GameScene'); })
+      .on('pointerdown', () => { this.scene.start('GameScene'); })
 
     this.add.text(playMainButton.x, playMainButton.y, 'Play (Main Game)').setOrigin(0.5);
 
     // Play Button
     const playMatterButton = this.add.image(playMainButton.x, playMainButton.y + playMainButton.displayHeight + 10, 'glass-UI', 'glassPanel.png')
-      .setDisplaySize(250, 50).on('selected', () => {
-        this.scene.start('MatterScene');
-      })
+      .setDisplaySize(250, 50)
+      .setInteractive()
+      .on('selected', () => { this.scene.start('MatterScene'); })
+      .on('pointerdown', () => { this.scene.start('MatterScene'); })
 
     this.add.text(playMatterButton.x, playMatterButton.y, 'Play (Matter Demo)').setOrigin(0.5);
 
     // Options Button
     const optionsButton = this.add.image(playMatterButton.x, playMatterButton.y + playMatterButton.displayHeight + 10, 'glass-UI', 'glassPanel.png')
-      .setDisplaySize(250, 50).on('selected', () => {
-        console.log('Options');
-      })
+      .setDisplaySize(250, 50)
+      .setInteractive()
+      .on('selected', () => { console.log('Options'); })
+      .on('pointerdown', () => { console.log('Options'); })
 
     this.add.text(optionsButton.x, optionsButton.y, 'Options').setOrigin(0.5);
 
