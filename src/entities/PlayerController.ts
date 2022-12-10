@@ -18,6 +18,7 @@ export default class PlayerController {
   private body: MatterJS.BodyType;
   private stateMachine: StateMachine<'idle'|'walking'|'jumping'>;
   private health = 100
+  private speed = { x: 3, y: 2};
 
   constructor({ scene, sprite, cursorKeys, obstacles }: PlayerConstructor) {
     this.scene = scene;
@@ -74,13 +75,13 @@ export default class PlayerController {
 
   private walkingOnUpdate() {
     const { left, right, up } = this.cursors;
-    const speed = 3;
+    const xSpeed = this.speed.x;
 
     if (left.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(false);
     } else {
       this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y })
@@ -92,24 +93,25 @@ export default class PlayerController {
   }
 
   private jumpingOnEnter() {
+    const ySpeed = this.speed.y;
      // set the vertical velocity of the body to -300
-     this.scene.matter.body.setVelocity(this.body, { x: this.body.velocity.x, y: -300 });
+     this.scene.matter.body.setVelocity(this.body, { x: this.body.velocity.x, y: -ySpeed });
    }
 
   private jumpingOnUpdate() {
     const { left, right } = this.cursors;
-    const speed = 3;
+    const xSpeed = this.speed.x;
 
     if (left.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: -xSpeed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      this.scene.matter.body.setVelocity(this.body, { x: speed, y: this.body.velocity.y });
+      this.scene.matter.body.setVelocity(this.body, { x: xSpeed, y: this.body.velocity.y });
       this.sprite.setFlipX(false);
     } else {
       this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
     }
 
-    // if ((this.sprite.body as MatterJS.BodyType).touching.down) this.stateMachine.setState('walking');
+    // if (this.sprite.body.touching.down) this.stateMachine.setState('walking');
   }
 }
