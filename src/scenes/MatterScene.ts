@@ -28,6 +28,7 @@ export default class MatterScene extends Phaser.Scene {
     this.tracker2 = this.add.rectangle(0, 0, 4, 4, 0xff0000);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.matter.world.disableGravity();
   }
 
   update() {
