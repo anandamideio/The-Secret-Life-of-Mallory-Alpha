@@ -15,6 +15,9 @@ export default class MatterScene extends Phaser.Scene {
   }
 
   create() {
+    // Create the UI
+    this.scene.launch('ui');
+
     this.add.tileSprite(400, 300, 800, 600, 'soil');
 
     this.car = this.matter.add.image(400, 300, 'car');
@@ -61,5 +64,10 @@ export default class MatterScene extends Phaser.Scene {
     } else if (right.isDown) {
       Body.applyForce(car.body as Matter.Body, car.getBottomRight(), vector.neg(force));
     }
+  }
+
+  destroy(){
+    this.scene.stop('ui');
+    console.log('SHUTDOWN');
   }
 }

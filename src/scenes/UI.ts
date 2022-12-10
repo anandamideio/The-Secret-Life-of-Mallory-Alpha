@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { sharedInstance as events } from './EventCenter.js';
 export default class UI extends Phaser.Scene {
   private graphics!: Phaser.GameObjects.Graphics;
-
+  private backText!: Phaser.GameObjects.Text;
   private techText!: Phaser.GameObjects.Text;
   private tech = 0;
 
@@ -16,6 +16,11 @@ export default class UI extends Phaser.Scene {
   public create() {
     this.graphics = this.add.graphics();
     this.setHealthBar(100);
+    this.backText = this.add.text(10, window.innerWidth / 6, 'Back to Main Menu', { fontSize: '16px' })
+      .setInteractive()
+      .on('pointerdown', () => { this.scene.start('main-menu'); })
+      .on('pointerover', () => { this.backText.setColor('#ff0'); })
+      .on('pointerout', () => { this.backText.setColor('#fff'); });
 
     this.techText = this.add.text(10, 40, 'Tech: 0', { fontSize: '16px' });
 

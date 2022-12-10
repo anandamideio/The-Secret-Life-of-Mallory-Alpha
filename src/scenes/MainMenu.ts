@@ -23,6 +23,7 @@ export default class MainMenu extends Phaser.Scene {
       .setDisplaySize(250, 50)
       .setInteractive()
       .on('selected', () => { this.scene.start('GameScene'); })
+      .on('pointerover', () => { this.selectButton(0); })
       .on('pointerdown', () => { this.scene.start('GameScene'); })
 
     this.add.text(playMainButton.x, playMainButton.y, 'Play (Main Game)').setOrigin(0.5);
@@ -32,6 +33,7 @@ export default class MainMenu extends Phaser.Scene {
       .setDisplaySize(250, 50)
       .setInteractive()
       .on('selected', () => { this.scene.start('MatterScene'); })
+      .on('pointerover', () => { this.selectButton(1); })
       .on('pointerdown', () => { this.scene.start('MatterScene'); })
 
     this.add.text(playMatterButton.x, playMatterButton.y, 'Play (Matter Demo)').setOrigin(0.5);
@@ -41,6 +43,7 @@ export default class MainMenu extends Phaser.Scene {
       .setDisplaySize(250, 50)
       .setInteractive()
       .on('selected', () => { console.log('Options'); })
+      .on('pointerover', () => { this.selectButton(2); })
       .on('pointerdown', () => { console.log('Options'); })
 
     this.add.text(optionsButton.x, optionsButton.y, 'Options').setOrigin(0.5);
