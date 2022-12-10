@@ -74,7 +74,7 @@ export default class PlayerController {
 
   private walkingOnUpdate() {
     const { left, right, up } = this.cursors;
-    const speed = 200;
+    const speed = 3;
 
     if (left.isDown) {
       this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
@@ -98,7 +98,7 @@ export default class PlayerController {
 
   private jumpingOnUpdate() {
     const { left, right } = this.cursors;
-    const speed = 200;
+    const speed = 3;
 
     if (left.isDown) {
       this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
