@@ -2,11 +2,34 @@ import Phaser from 'phaser';
 import StateMachine from '../modules/StateMachine.js';
 import ObstaclesController from './ObstaclesController.js';
 
-type PlayerConstructor = {
+interface PlayerConstructor {
   scene: Phaser.Scene;
   sprite: Phaser.GameObjects.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   obstacles: ObstaclesController;
+  options?: PlayerSceneOptions;
+}
+
+interface PlayerSceneOptions {
+  label?: string;
+  speed?: { x: number, y: number };
+  health?: { max?: number, current?: number, additional?: number };
+  radius?: number;
+  friction?: number;
+  frictionAir?: number;
+  restitution?: number;
+  origin?: { x: number, y: number };
+}
+
+const defaults = {
+  label: 'Player',
+  speed: { x: 3, y: 2 },
+  health: { max: 100, current: 100, additional: 0 },
+  radius: 12,
+  friction: 0.3,
+  frictionAir: 0.05,
+  restitution: 0.5,
+  origin: { x: 0.5, y: 0.5 }
 }
 
 export default class PlayerController {
@@ -14,32 +37,35 @@ export default class PlayerController {
   private sprite: Phaser.GameObjects.Sprite|Phaser.Physics.Matter.Sprite;
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private obstacles: ObstaclesController;
-
+  private options: Required<PlayerSceneOptions>;
   private body: MatterJS.BodyType;
   private stateMachine: StateMachine<'idle'|'walking'|'jumping'>;
   private health = 100
   private speed = { x: 3, y: 2};
 
-  constructor({ scene, sprite, cursorKeys, obstacles }: PlayerConstructor) {
+  constructor({ scene, sprite, cursorKeys, obstacles, options }: PlayerConstructor) {
+    this.options = { ...defaults, ...options };
+    this.speed = this.options.speed;
+
     this.scene = scene;
     this.sprite = sprite;
     this.cursors = cursorKeys;
     this.obstacles = obstacles;
-
+    
     this.createAnimations();
 
-    this.body = this.scene.matter.bodies.circle(this.sprite.x, this.sprite.y, 12, {
-      label: 'player',
-      frictionAir: 0.05,
-      friction: 0.3,
-      restitution: 0.5
+    this.body = this.scene.matter.bodies.circle(this.sprite.x, this.sprite.y, this.options.radius, {
+      label: this.options.label,
+      frictionAir: this.options.frictionAir,
+      friction: this.options.friction,
+      restitution: this.options.restitution
     });
 
-    this.sprite.setOrigin(0.5, 0.5);
+    this.sprite.setOrigin(this.options.origin.x, this.options.origin.y);
 
     this.scene.matter.add.gameObject(this.sprite, this.body);
 
-    this.stateMachine = new StateMachine(this, 'player');
+    this.stateMachine = new StateMachine(this, this.options.label);
 
     this.stateMachine
     .addState('idle', { onEnter: this.idleOnEnter, onUpdate: this.idleOnUpdate })

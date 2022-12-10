@@ -29,6 +29,8 @@ export default class Game extends Phaser.Scene {
     this.load.image('cityTiles', 'assets/tilemaps/tilemap.png');
     this.load.tilemapTiledJSON('levelOne', 'assets/tilemaps/CItyOne.json');
 
+    // this.matter.world.disableGravity();
+
     // this.load.image('background', 'assets/bg_layer1.png');
     
     // Load platforms
@@ -99,13 +101,11 @@ export default class Game extends Phaser.Scene {
       scene: this,
       sprite: this.playerSprite,
       cursorKeys: this.cursorKeys,
-      obstacles: this.obstacles
+      obstacles: this.obstacles,
+      options: { label: 'Mallory' }
     });
 
-    // Don't collide unless your landing on something
-    // this.playerSprite.body.checkCollision.up = false;
-    // this.playerSprite.body.checkCollision.left = false;
-    // this.playerSprite.body.checkCollision.right = false;
+
     // Follow the player
     // this.cameras.main.startFollow(this.playerSprite, true)
     // Set the horizontal deadzone to 1.5x game width
