@@ -1,5 +1,3 @@
-
-
 export default class ObstaclesController {
   private obstacles = new Map<string, MatterJS.BodyType>();
   private createKey(name: string, id: number){ return `${name}-${id}`; }

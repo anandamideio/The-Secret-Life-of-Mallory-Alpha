@@ -57,7 +57,13 @@ export default class Game extends Phaser.Scene {
     layer.setCollisionByProperty({ collides: true });
 
     // Draw the logo above the background
-    // const logo = this.add.image(window.innerWidth / 2, 70, 'logo');
+    const logo = this.add.image(window.innerWidth / 2, 70, 'logo');
+
+    // Move the logo back and forth
+    this.tweens.add({
+      targets: logo, y: 90, duration: 900, ease: 'Sine.inOut', yoyo: true, repeat: -1
+    });
+
     // Create staticGroup to house the platforms
     // this.platforms = this.physics.add.staticGroup();
     // Draw platforms (of different biomes) randomly
@@ -92,11 +98,7 @@ export default class Game extends Phaser.Scene {
 
     // Draw the player sprite
     this.playerSprite = this.add.sprite(940, 320, 'mallory', 0);
-
-    console.log(this.playerSprite)
-
-    // Create the player controller
-    if (!this.playerSprite) throw new Error('Player sprite not found')
+    // Assign the player instance
     this.player = new PlayerController({
       scene: this,
       sprite: this.playerSprite,
@@ -116,20 +118,10 @@ export default class Game extends Phaser.Scene {
 
     // Add a collider for the logo
     // this.physics.add.collider(this.playerSprite, logo);
-
-    // Move the logo back and forth
-    // this.tweens.add({
-    //   targets: logo,
-    //   y: 90,
-    //   duration: 900,
-    //   ease: 'Sine.inOut',
-    //   yoyo: true,
-    //   repeat: -1
-    // });
   }
 
   destroy(){
-    // this.scene.stop('ui');
+    this.scene.stop('ui');
     console.log('SHUTDOWN');
   }
 
