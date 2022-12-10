@@ -60,9 +60,9 @@ export default class MatterScene extends Phaser.Scene {
     const { cursors: { left, right }, car, vector } = this;
 
     if (left.isDown) {
-      this.matter.body.applyForce(car.body, car.getTopRight(), force);
+      this.matter.body.applyForce(car.body as MatterJS.BodyType, car.getTopRight(), force);
     } else if (right.isDown) {
-      this.matter.body.applyForce(car.body, car.getBottomRight(), vector.neg(force));
+      this.matter.body.applyForce(car.body as MatterJS.BodyType, car.getBottomRight(), vector.neg(force));
     }
   }
 

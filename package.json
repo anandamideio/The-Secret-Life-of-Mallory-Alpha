@@ -1,7 +1,7 @@
 {
-  "name": "phaser3-rollup-typescript",
-  "version": "1.1.0",
-  "description": "Phaser 3 TypeScript Starter",
+  "name": "the-secret-life-of-mallory",
+  "version": "0.2.0",
+  "description": "Hacking game",
   "main": "dist/index.js",
   "scripts": {
     "dev": "vite",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geocine/phaser3-rollup-typescript.git"
+    "url": "git+https://github.com/anandamideio/The-Secret-Life-of-Mallory-Alpha.git"
   },
-  "author": "Aivan Monceller",
+  "author": "Antonio Bourassa",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/geocine/phaser3-rollup-typescript/issues"
+    "url": "https://github.com/anandamideio/The-Secret-Life-of-Mallory-Alpha/issues"
   },
-  "homepage": "https://github.com/geocine/phaser3-rollup-typescript#readme",
+  "homepage": "https://github.com/anandamideio/The-Secret-Life-of-Mallory-Alpha#readme",
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.9",
     "@rollup/plugin-commonjs": "^22.0.0",
