@@ -1,5 +1,4 @@
-import { Bodies, Body } from 'matter-js';
-import Phaser from 'phaser'
+import Phaser from 'phaser';
 import StateMachine from '../modules/StateMachine.js';
 import ObstaclesController from './ObstaclesController.js';
 
@@ -16,7 +15,7 @@ export default class PlayerController {
   private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
   private obstacles: ObstaclesController;
 
-  private body: Body;
+  private body: MatterJS.BodyType;
   private stateMachine: StateMachine<'idle'|'walking'|'jumping'>;
   private health = 100
 
@@ -28,17 +27,17 @@ export default class PlayerController {
 
     this.createAnimations();
 
-    this.body = Bodies.circle(this.sprite.x, this.sprite.y, 12, {
+    this.body = this.scene.matter.bodies.circle(this.sprite.x, this.sprite.y, 12, {
       label: 'player',
       frictionAir: 0.05,
       friction: 0.1,
       restitution: 0.5
     });
-    console.log('[PlayerController]', this.sprite)
+
     this.sprite.setOrigin(0.5, 0.5);
-    console.log('[PlayerController]', this.sprite)
+
     this.scene.matter.add.gameObject(this.sprite, this.body);
-    console.log('[PlayerController]', this.sprite)
+
     this.stateMachine = new StateMachine(this, 'player');
 
     this.stateMachine
@@ -78,13 +77,13 @@ export default class PlayerController {
     const speed = 200;
 
     if (left.isDown) {
-      Body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      Body.setVelocity(this.body, { x: speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: speed, y: this.body.velocity.y })
       this.sprite.setFlipX(false);
     } else {
-      Body.setVelocity(this.body, { x: 0, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y })
       this.stateMachine.setState('idle');
     }
 
@@ -94,7 +93,7 @@ export default class PlayerController {
 
   private jumpingOnEnter() {
      // set the vertical velocity of the body to -300
-     Body.setVelocity(this.body, { x: this.body.velocity.x, y: -300 });
+     this.scene.matter.body.setVelocity(this.body, { x: this.body.velocity.x, y: -300 });
    }
 
   private jumpingOnUpdate() {
@@ -102,13 +101,13 @@ export default class PlayerController {
     const speed = 200;
 
     if (left.isDown) {
-      Body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
+      this.scene.matter.body.setVelocity(this.body, { x: -speed, y: this.body.velocity.y })
       this.sprite.setFlipX(true);
     } else if (right.isDown) {
-      Body.setVelocity(this.body, { x: speed, y: this.body.velocity.y });
+      this.scene.matter.body.setVelocity(this.body, { x: speed, y: this.body.velocity.y });
       this.sprite.setFlipX(false);
     } else {
-      Body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
+      this.scene.matter.body.setVelocity(this.body, { x: 0, y: this.body.velocity.y });
     }
 
     // if ((this.sprite.body as MatterJS.BodyType).touching.down) this.stateMachine.setState('walking');
