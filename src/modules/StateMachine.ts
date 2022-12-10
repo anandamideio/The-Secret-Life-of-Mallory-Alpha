@@ -27,18 +27,23 @@ export default class StateMachine<stateNames extends string = stateName> {
 
   public addState(stateName: stateNames, config: IStateFunctions) {
     const { ctx } = this;
+    const { onEnter, onUpdate, onExit } = config;
+
     this.states.set(stateName, {
       name: stateName,
-      onEnter: config?.onEnter?.bind(ctx),
-      onUpdate: config?.onUpdate?.bind(ctx),
-      onExit: config?.onExit?.bind(ctx)
+      onEnter: onEnter?.bind(ctx),
+      onUpdate: onUpdate?.bind(ctx),
+      onExit: onExit?.bind(ctx)
     });
     return this;
   }
 
   public setState(name: stateNames): void {
+    // If you call a state that doesn't exit and warn
     if (!this.states.has(name)) return console.warn(`[StateMachine::${this.id}:setState] State ${name} does not exist`);
+    // If you call the current state do nothing, but do warn
     if (this.isCurrentState(name)) return console.warn(`[StateMachine::${this.id}:setState] State ${name} is already the current state`);
+    // If you call a state while changing state, queue it up, but do warn
     if (this.isChangingState){
       console.warn(`[StateMachine::${this.id}:setState] State ${name} is already changing`);
       this.changeStateQueue.push(name);
@@ -46,8 +51,9 @@ export default class StateMachine<stateNames extends string = stateName> {
     }
 
     this.isChangingState = true;
+    // This line can be turned off, or tied to a debug flag later
     console.log(`[StateMachine::${this.id}:setState] Changing state from ${this.currentState?.name ?? 'none'} to ${name}`);
-
+    // If a state has an onExit function, call it
     if (this.currentState?.onExit) this.currentState.onExit();
     this.currentState = this.states.get(name);
     if (this.currentState?.onEnter) this.currentState.onEnter();
