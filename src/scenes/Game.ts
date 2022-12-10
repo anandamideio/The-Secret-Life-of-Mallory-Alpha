@@ -105,11 +105,10 @@ export default class Game extends Phaser.Scene {
       options: { label: 'Mallory' }
     });
 
-
     // Follow the player
-    // this.cameras.main.startFollow(this.playerSprite, true)
+    this.cameras.main.startFollow(this.playerSprite, true)
     // Set the horizontal deadzone to 1.5x game width
-    // this.cameras.main.setDeadzone(this.scale.width * 1.5);
+    this.cameras.main.setDeadzone(this.scale.width * 1.5);
 
     // Add collision detection
     // this.physics.add.collider(this.playerSprite, layer);
