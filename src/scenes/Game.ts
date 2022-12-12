@@ -6,7 +6,7 @@ import { EventCenter } from './EventCenter.js';
 export default class Game extends Phaser.Scene {
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  player?: PlayerController;
+  player!: PlayerController;
   playerSprite?: Phaser.GameObjects.Sprite;
 
   // platforms: Phaser.Physics.Arcade.StaticGroup|undefined = undefined;
@@ -129,12 +129,32 @@ export default class Game extends Phaser.Scene {
     this.player.changeHealth(-50);
 
     setTimeout(() => {
-      this.player!.changeHealth(30);
+      this.player.changeHealth(30);
     }, 500);
 
     setTimeout(() => {
-      this.player!.changeHealth(-10);
+      this.player.changeHealth(-10);
     }, 1200);
+
+    setTimeout(() => {
+      this.player.changeHealth(-10);
+    }, 1400);
+
+    setTimeout(() => {
+      this.player.changeHealth(-10);
+    }, 1600);
+
+    setTimeout(() => {
+      this.player.changeHealth(-40);
+    }, 1800);
+
+    setTimeout(() => {
+      this.player.changeHealth(-10);
+    }, 2000);
+
+    setTimeout(() => {
+      this.player.changeHealth(-10);
+    }, 2200);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
       this.destroy()
