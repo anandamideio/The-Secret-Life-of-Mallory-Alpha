@@ -4,6 +4,7 @@ import PlayerController from '../entities/PlayerController.js';
 import getRandomFloat from '../modules/getRandomFloat.js';
 import makeArrayOf from '../modules/makeArrayOf.js';
 import range from '../modules/range.js';
+import { EventCenter } from './EventCenter.js';
 
 export default class Game extends Phaser.Scene {
   cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -104,7 +105,15 @@ export default class Game extends Phaser.Scene {
       sprite: this.playerSprite,
       cursorKeys: this.cursorKeys,
       obstacles: this.obstacles,
-      options: { label: 'Mallory' }
+      options: {
+        label: 'Mallory',
+        health: { 
+          onChange(health) {
+            console.log( { health })
+            EventCenter.emit('health-changed', health);
+          },
+        }
+       }
     });
 
     // Follow the player
@@ -118,6 +127,21 @@ export default class Game extends Phaser.Scene {
 
     // Add a collider for the logo
     // this.physics.add.collider(this.playerSprite, logo);
+
+
+    this.player.changeHealth(50);
+
+    setTimeout(() => {
+      this.player!.changeHealth(60);
+    }, 500);
+
+    setTimeout(() => {
+      this.player!.changeHealth(10);
+    }, 1200);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
+      this.destroy()
+    });
   }
 
   destroy(){

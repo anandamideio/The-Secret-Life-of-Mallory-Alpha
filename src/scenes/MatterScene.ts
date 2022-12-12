@@ -68,6 +68,8 @@ export default class MatterScene extends Phaser.Scene {
 
   destroy(){
     this.scene.stop('ui');
+
+    this.matter.world.remove(this.car);
     console.log('SHUTDOWN');
   }
 }

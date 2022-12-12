@@ -1,3 +1,3 @@
 import Phaser from 'phaser';
 
-export const sharedInstance = new Phaser.Events.EventEmitter();
+export const EventCenter = new Phaser.Events.EventEmitter();

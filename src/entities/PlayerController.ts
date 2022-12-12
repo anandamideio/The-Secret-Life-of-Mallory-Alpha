@@ -13,7 +13,12 @@ interface PlayerConstructor {
 interface PlayerSceneOptions {
   label?: string;
   speed?: { x: number, y: number };
-  health?: { max?: number, current?: number, additional?: number };
+  health?: {
+    max?: number,
+    current?: number,
+    additional?: number,
+    onChange?: ((health: number) => void)|((health: number) => number)
+  };
   radius?: number;
   friction?: number;
   frictionAir?: number;
@@ -24,7 +29,7 @@ interface PlayerSceneOptions {
 const defaults = {
   label: 'Player',
   speed: { x: 3, y: 2 },
-  health: { max: 100, current: 100, additional: 0 },
+  health: { max: 100, current: 100, additional: 0,  },
   radius: 12,
   friction: 0.3,
   frictionAir: 0.05,
@@ -143,7 +148,26 @@ export default class PlayerController {
     // if (this.sprite.body.touching.down) this.stateMachine.setState('walking');
   }
 
+  public changeHealth(health: number) {
+    let healthChange = health;
+
+    if (this.options.health.onChange && typeof this.options.health.onChange === 'function') {
+      const additionalChange = this.options.health.onChange(health);
+
+      // If we pass a function that we want to additionally modify the health outside the scope of this controller we can
+      if (additionalChange) {
+        healthChange += additionalChange;
+      }
+    }
+
+    this.health += healthChange;
+  }
+
   destroy() {
+    this.sprite.setActive(false);
+    this.sprite.setVisible(false);
+    this.sprite.removeInteractive();
+    this.scene.matter.world.remove(this.body);
     this.sprite.destroy();
     this.stateMachine.destroy();
   }

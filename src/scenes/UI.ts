@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { sharedInstance as events } from './EventCenter.js';
+import { EventCenter } from './EventCenter.js';
 export default class UI extends Phaser.Scene {
   private graphics!: Phaser.GameObjects.Graphics;
   private backText!: Phaser.GameObjects.Text;
@@ -15,7 +15,9 @@ export default class UI extends Phaser.Scene {
 
   public create() {
     this.graphics = this.add.graphics();
+
     this.setHealthBar(100);
+
     this.backText = this.add.text(10, window.innerWidth / 6, 'Back to Main Menu', { fontSize: '16px' })
       .setInteractive()
       .on('pointerdown', () => { this.scene.start('main-menu'); })
@@ -24,11 +26,12 @@ export default class UI extends Phaser.Scene {
 
     this.techText = this.add.text(10, 40, 'Tech: 0', { fontSize: '16px' });
 
-    events.on('health-changed', this.handleHealthChanged, this);
-    events.on('tech-collected', this.handleTechCollected, this);
+    EventCenter.on('health-changed', this.handleHealthChanged, this);
+    EventCenter.on('tech-collected', this.handleTechCollected, this);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {
-      events.off('tech-collected', this.handleTechCollected, this);
+      EventCenter.off('tech-collected', this.handleTechCollected, this);
+      EventCenter.off('health-changed', this.handleHealthChanged, this);
     });
   }
 
