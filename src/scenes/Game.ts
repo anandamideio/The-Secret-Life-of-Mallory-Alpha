@@ -1,9 +1,6 @@
 import Phaser from 'phaser';
 import ObstaclesController from '../entities/ObstaclesController.js';
 import PlayerController from '../entities/PlayerController.js';
-import getRandomFloat from '../modules/getRandomFloat.js';
-import makeArrayOf from '../modules/makeArrayOf.js';
-import range from '../modules/range.js';
 import { EventCenter } from './EventCenter.js';
 
 export default class Game extends Phaser.Scene {
