@@ -129,14 +129,14 @@ export default class Game extends Phaser.Scene {
     // this.physics.add.collider(this.playerSprite, logo);
 
 
-    this.player.changeHealth(50);
+    this.player.changeHealth(-50);
 
     setTimeout(() => {
-      this.player!.changeHealth(60);
+      this.player!.changeHealth(30);
     }, 500);
 
     setTimeout(() => {
-      this.player!.changeHealth(10);
+      this.player!.changeHealth(-10);
     }, 1200);
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN as string, () => {

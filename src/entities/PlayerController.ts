@@ -17,7 +17,7 @@ interface PlayerSceneOptions {
     max?: number,
     current?: number,
     additional?: number,
-    onChange?: ((health: number) => void)|((health: number) => number)
+    onChange?: (health: number) => void
   };
   radius?: number;
   friction?: number;
@@ -149,18 +149,11 @@ export default class PlayerController {
   }
 
   public changeHealth(health: number) {
-    let healthChange = health;
+    this.health += health;
 
     if (this.options.health.onChange && typeof this.options.health.onChange === 'function') {
-      const additionalChange = this.options.health.onChange(health);
-
-      // If we pass a function that we want to additionally modify the health outside the scope of this controller we can
-      if (additionalChange) {
-        healthChange += additionalChange;
-      }
+      this.options.health.onChange(this.health);
     }
-
-    this.health += healthChange;
   }
 
   destroy() {
