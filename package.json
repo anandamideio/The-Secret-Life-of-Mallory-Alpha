@@ -20,7 +20,7 @@
   "homepage": "https://github.com/geocine/phaser3-rollup-typescript#readme",
   "devDependencies": {
     "@rollup/plugin-alias": "^4.0.2",
-    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-commonjs": "^24.0.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@types/node": "^18.11.17",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
